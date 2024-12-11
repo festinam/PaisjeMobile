@@ -1,0 +1,11 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <color android:color="#3A539B" /> <!-- Primary background color -->
+    </item>
+    <item>
+        <bitmap
+            android:src="@drawable/background"
+            android:tileMode="repeat"
+            android:gravity="center" /> <!-- Optional pattern overlay -->
+    </item>
+</layer-list>
