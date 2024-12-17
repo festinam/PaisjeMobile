@@ -1,5 +1,6 @@
 package com.example.bookmanagerapp;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -151,6 +152,19 @@ public class DB extends SQLiteOpenHelper {
         long result = db.insert("books", null, contentValues);
         return result != -1; // Return true if insert is successful
     }
+
+    @SuppressLint("Range")
+    public String getHashedPasswordForUser(String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT password FROM users WHERE email = ?", new String[]{email});
+
+        if (cursor.moveToFirst()) {
+            return cursor.getString(cursor.getColumnIndex("password"));
+        } else {
+            return null; // User not found
+        }
+    }
+
 
 
 }

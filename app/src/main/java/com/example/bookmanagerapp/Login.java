@@ -11,6 +11,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.mindrot.jbcrypt.BCrypt; // Import BCrypt
+
 public class Login extends AppCompatActivity {
     private EditText emailInput, passwordInput;
     private Button loginButton;
@@ -41,6 +43,13 @@ public class Login extends AppCompatActivity {
             Intent intent = new Intent(Login.this, SignUp.class);
             startActivity(intent);
         });
+
+        // Handle forgot password link click
+        forgotPassword.setOnClickListener(v -> {
+            // Navigate to the ForgotPasswordActivity
+            Intent intent = new Intent(Login.this, ForgotPassword.class);
+            startActivity(intent);
+        });
     }
 
     private void handleLogin() {
@@ -68,8 +77,10 @@ public class Login extends AppCompatActivity {
             return;
         }
 
-        // Check user credentials in the database
-        if (dbHelper.verifyUser(email, password)) {
+        // Get stored hashed password from the database using the email
+        String storedHashedPassword = dbHelper.getHashedPasswordForUser(email); // You need to implement this method in DB
+
+        if (storedHashedPassword != null && BCrypt.checkpw(password, storedHashedPassword)) {
             // Login successful
             Toast.makeText(this, "Login successful!", Toast.LENGTH_SHORT).show();
 
