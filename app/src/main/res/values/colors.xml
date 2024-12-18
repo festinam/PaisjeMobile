@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!-- Define your app colors here -->
+    <color name="white">#FFFFFF</color>
+    <color name="buttonAccent">#FF5722</color> <!-- Example accent color (Orange) -->
 </resources>

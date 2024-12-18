@@ -1,17 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_background">
 
-    <Button
-        android:id="@+id/getStartedButton"
+    <!-- Title Text: "Welcome to" -->
+    <TextView
+        android:id="@+id/welcomeTitleTop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="340dp"
-        android:layout_marginEnd="160dp"
-        android:text="Button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:text="Welcome to"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <!-- Frame for Circle Background and Book Image -->
+    <FrameLayout
+        android:id="@+id/bookFrame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/welcomeTitleTop"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true">
+
+        <!-- White Circle Background -->
+        <View
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:background="@drawable/circle_background" />
+
+        <!-- Book Image -->
+        <ImageView
+            android:id="@+id/bookIcon"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:src="@drawable/book"
+            android:contentDescription="Book Icon"
+            android:layout_gravity="center" />
+    </FrameLayout>
+
+    <!-- Subtitle Text: "Book Manager" -->
+    <TextView
+        android:id="@+id/welcomeTitleBottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/bookFrame"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:text="Book Manager"
+        android:textColor="@android:color/white"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+
+    <!-- Additional Subtitle: "Your personal library, organized your way" -->
+    <TextView
+        android:id="@+id/welcomeSubtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/welcomeTitleBottom"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        android:text="Your personal library, organized your way"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:textStyle="italic" />
+
+    <!-- Get Started Button -->
+    <Button
+        android:id="@+id/getStartedButton"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="80dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/rounded_button"
+        android:text="Get Started"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:contentDescription="Start the app" />
+</RelativeLayout>
