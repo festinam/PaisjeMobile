@@ -1,20 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
 
+    <!-- Toolbar -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/homeToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/buttonAccent"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:titleTextColor="@android:color/white" />
+
+    <!-- RecyclerView for displaying books -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/booksRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp" />
+        android:layout_below="@id/homeToolbar"
+        android:padding="16dp"
+        android:clipToPadding="false"
+        android:scrollbars="vertical" />
 
+    <!-- Floating Action Button for adding a new book -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAddBook"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:contentDescription="Add Book"
         android:src="@drawable/ic_add"
-        android:contentDescription="Add Book" />
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        android:tint="@android:color/white"
+        android:backgroundTint="@color/buttonAccent" />
+</RelativeLayout>
