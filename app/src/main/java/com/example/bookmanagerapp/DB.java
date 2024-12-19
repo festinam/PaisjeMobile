@@ -142,6 +142,7 @@ public class DB extends SQLiteOpenHelper {
         return emailExists;
     }
 
+
     public boolean insertBook(String title, String author, float rating) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -156,7 +157,7 @@ public class DB extends SQLiteOpenHelper {
     @SuppressLint("Range")
     public String getHashedPasswordForUser(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT password FROM users WHERE email = ?", new String[]{email});
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery("SELECT password FROM users WHERE email = ?", new String[]{email});
 
         if (cursor.moveToFirst()) {
             return cursor.getString(cursor.getColumnIndex("password"));
@@ -164,6 +165,16 @@ public class DB extends SQLiteOpenHelper {
             return null; // User not found
         }
     }
+
+    public Cursor searchBooks(String query) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] selectionArgs = {"%" + query + "%"};
+        return db.query("books", null, "title LIKE ? OR author LIKE ?", selectionArgs, null, null, null);
+    }
+
+
+
+
 
 
 

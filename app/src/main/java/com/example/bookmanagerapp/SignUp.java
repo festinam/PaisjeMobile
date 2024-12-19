@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.mindrot.jbcrypt.BCrypt; // Import BCrypt
+
 public class SignUp extends AppCompatActivity {
 
     private EditText nameInput, surnameInput, emailInput, passwordInput;
@@ -74,6 +76,23 @@ public class SignUp extends AppCompatActivity {
             return;
         }
 
+        // Password validation (at least one number, one special character, and minimum length 8)
+        if (password.length() < 8) {
+            passwordInput.setError("Password must be at least 8 characters long");
+            passwordInput.requestFocus();
+            return;
+        }
+        if (!password.matches(".*[0-9].*")) {
+            passwordInput.setError("Password must contain at least one number");
+            passwordInput.requestFocus();
+            return;
+        }
+        if (!password.matches(".*[!@#$%^&*(),.?\":{}|<>].*")) {
+            passwordInput.setError("Password must contain at least one special character");
+            passwordInput.requestFocus();
+            return;
+        }
+
         // Check if the email already exists
         if (dbHelper.checkEmailExists(email)) {
             emailInput.setError("Email already exists");
@@ -90,4 +109,5 @@ public class SignUp extends AppCompatActivity {
             Toast.makeText(this, "Error during sign-up. Please try again.", Toast.LENGTH_SHORT).show();
         }
     }
+
 }

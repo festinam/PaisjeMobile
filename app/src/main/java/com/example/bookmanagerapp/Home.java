@@ -7,6 +7,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
+import androidx.appcompat.widget.SearchView;
+
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -44,6 +46,14 @@ public class Home extends AppCompatActivity {
         booksRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         booksRecyclerView.setAdapter(booksAdapter);
 
+        // Set the item click listener
+        booksAdapter.setOnBookClickListener(book -> {
+            // Navigate to book detail/edit page
+            Intent intent = new Intent(Home.this, BookDetailActivity.class);
+            intent.putExtra("bookId", book.getId());
+            startActivity(intent);
+        });
+
         // Load books from the database
         loadBooks();
 
@@ -68,7 +78,44 @@ public class Home extends AppCompatActivity {
             finish(); // Close the Home activity
             return true;
         }
+        if (item.getItemId() == R.id.menuSearch) {
+            SearchView searchView = (SearchView) item.getActionView();
+            searchView.setQueryHint("Search books...");
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    searchBooks(query);
+                    return true;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    searchBooks(newText);
+                    return true;
+                }
+            });
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void searchBooks(String query) {
+        Cursor cursor = dbHelper.searchBooks(query); // Implement this method in DB to search by title or author
+        if (cursor != null && cursor.moveToFirst()) {
+            bookList.clear();
+            do {
+                int id = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
+                String title = cursor.getString(cursor.getColumnIndexOrThrow("title"));
+                String author = cursor.getString(cursor.getColumnIndexOrThrow("author"));
+                float rating = cursor.getFloat(cursor.getColumnIndexOrThrow("rating"));
+
+                bookList.add(new Book(id, title, author, rating));
+            } while (cursor.moveToNext());
+
+            booksAdapter.notifyDataSetChanged();
+            cursor.close();
+        } else {
+            Toast.makeText(this, "No books found matching \"" + query + "\"", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void loadBooks() {
@@ -87,7 +134,10 @@ public class Home extends AppCompatActivity {
             booksAdapter.notifyDataSetChanged();
             cursor.close();
         } else {
+            // Display empty state if no books found
             Toast.makeText(this, "No books found", Toast.LENGTH_SHORT).show();
+            // Optionally, show an empty state layout or image
+            findViewById(R.id.emptyStateView).setVisibility(View.VISIBLE); // You can create a TextView or ImageView for empty state
         }
     }
 }
