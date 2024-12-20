@@ -24,14 +24,17 @@
             </intent-filter>
         </activity>
 
+        <!-- Login Activity with a specific theme -->
+        <activity
+            android:name=".Login"
+            android:exported="true"
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
+
         <!-- Other activities -->
-        <activity android:name=".Login" android:exported="true" />
-        <activity android:name=".ForgotPassword" android:exported="true" />
         <activity android:name=".SignUp" android:exported="true" />
         <activity android:name=".Home" android:exported="true"
             tools:ignore="Instantiatable" />
         <activity android:name=".Welcome" android:exported="true" />
 
     </application>
-
 </manifest>
