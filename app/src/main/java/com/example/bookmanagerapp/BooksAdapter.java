@@ -13,9 +13,21 @@ import java.util.List;
 public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewHolder> {
 
     private List<Book> bookList;
+    private OnBookClickListener onBookClickListener;
 
+    // Constructor
     public BooksAdapter(List<Book> bookList) {
         this.bookList = bookList;
+    }
+
+    // Interface for click listener
+    public interface OnBookClickListener {
+        void onBookClick(Book book);
+    }
+
+    // Setter for the click listener
+    public void setOnBookClickListener(OnBookClickListener listener) {
+        this.onBookClickListener = listener;
     }
 
     @NonNull
@@ -32,8 +44,14 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewHold
         holder.titleTextView.setText(book.getTitle());
         holder.authorTextView.setText(book.getAuthor());
         holder.ratingTextView.setText(String.format("⭐ %.1f", book.getRating()));
-    }
 
+        // Set click listener for the item
+        holder.itemView.setOnClickListener(v -> {
+            if (onBookClickListener != null) {
+                onBookClickListener.onBookClick(book);
+            }
+        });
+    }
 
     @Override
     public int getItemCount() {
@@ -52,6 +70,4 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewHold
             ratingTextView = itemView.findViewById(R.id.ratingTextView);
         }
     }
-
-
 }

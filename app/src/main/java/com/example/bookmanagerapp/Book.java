@@ -1,15 +1,33 @@
 package com.example.bookmanagerapp;
 
 public class Book {
+    private int id; // Unique identifier for the book
     private String title;
     private String author;
     private float rating;
 
-    // Constructor
+    // Constructor with ID
+    public Book(int id, String title, String author, float rating) {
+        this.id = id;
+        this.title = title;
+        this.author = author;
+        this.rating = rating;
+    }
+
+    // Constructor without ID (for creating new books without pre-existing IDs)
     public Book(String title, String author, float rating) {
         this.title = title;
         this.author = author;
         this.rating = rating;
+    }
+
+    // Getter and Setter for ID
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     // Getter methods

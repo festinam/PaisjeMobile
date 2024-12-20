@@ -14,7 +14,7 @@
         android:theme="@style/Theme.BookManagerApp"
         tools:targetApi="31">
 
-        <!-- MainActivity should be the launcher activity -->
+        <!-- MainActivity (Launcher Activity) -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -24,22 +24,31 @@
             </intent-filter>
         </activity>
 
-        <!-- Login Activity with a specific theme -->
+        <!-- Login Activity -->
         <activity
             android:name=".Login"
             android:exported="true"
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
 
-        <!-- Other activities -->
-<<<<<<< HEAD
-=======
-        <activity android:name=".Login" android:exported="true" />
-        <activity android:name=".ForgotPassword" android:exported="true" />
->>>>>>> ce66018933bba4767eb78a551a93648a3f4de56f
-        <activity android:name=".SignUp" android:exported="true" />
-        <activity android:name=".Home" android:exported="true"
-            tools:ignore="Instantiatable" />
-        <activity android:name=".Welcome" android:exported="true" />
+        <!-- Forgot Password Activity -->
+        <activity
+            android:name=".ForgotPassword"
+            android:exported="true" />
+
+        <!-- Sign Up Activity -->
+        <activity
+            android:name=".SignUp"
+            android:exported="true" />
+
+        <!-- Home Activity -->
+        <activity
+            android:name=".Home"
+            android:exported="true" />
+
+        <!-- Welcome Activity -->
+        <activity
+            android:name=".Welcome"
+            android:exported="true" />
 
     </application>
 </manifest>

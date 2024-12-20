@@ -1,7 +1,6 @@
 package com.example.bookmanagerapp;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -10,8 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class AddBook extends AppCompatActivity {
 
-    private EditText etTitle, etAuthor, etRating;
-    private Button btnSave;
+    private EditText bookTitleInput, authorInput, ratingInput;
+    private Button addBookButton;
     private DB dbHelper;
 
     @Override
@@ -20,38 +19,44 @@ public class AddBook extends AppCompatActivity {
         setContentView(R.layout.activity_add_book);
 
         // Initialize views
-        etTitle = findViewById(R.id.etTitle);
-        etAuthor = findViewById(R.id.etAuthor);
-        etRating = findViewById(R.id.etRating);
-        btnSave = findViewById(R.id.btnSave);
+        bookTitleInput = findViewById(R.id.bookTitleInput);
+        authorInput = findViewById(R.id.authorInput);
+        ratingInput = findViewById(R.id.ratingInput);
+        addBookButton = findViewById(R.id.addBookButton);
 
         // Initialize database helper
         dbHelper = new DB(this);
 
         // Save book on button click
-        btnSave.setOnClickListener(v -> saveBook());
+        addBookButton.setOnClickListener(v -> saveBook());
     }
 
     private void saveBook() {
-        String title = etTitle.getText().toString().trim();
-        String author = etAuthor.getText().toString().trim();
-        String ratingStr = etRating.getText().toString().trim();
+        String title = bookTitleInput.getText().toString().trim();
+        String author = authorInput.getText().toString().trim();
+        String ratingStr = ratingInput.getText().toString().trim();
 
         if (title.isEmpty() || author.isEmpty() || ratingStr.isEmpty()) {
-            Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
             return;
         }
 
         try {
             float rating = Float.parseFloat(ratingStr);
-            if (dbHelper.insertBook(title, author, rating)) {
+            if (rating < 0 || rating > 5) {
+                Toast.makeText(this, "Rating must be between 0 and 5", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            boolean isInserted = dbHelper.insertBook(title, author, rating);
+            if (isInserted) {
                 Toast.makeText(this, "Book added successfully", Toast.LENGTH_SHORT).show();
                 finish(); // Close AddBook activity
             } else {
                 Toast.makeText(this, "Failed to add book", Toast.LENGTH_SHORT).show();
             }
         } catch (NumberFormatException e) {
-            Toast.makeText(this, "Invalid rating", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Invalid rating. Please enter a valid number.", Toast.LENGTH_SHORT).show();
         }
     }
 }
