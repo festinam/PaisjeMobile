@@ -31,6 +31,11 @@
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
 
         <!-- Other activities -->
+<<<<<<< HEAD
+=======
+        <activity android:name=".Login" android:exported="true" />
+        <activity android:name=".ForgotPassword" android:exported="true" />
+>>>>>>> ce66018933bba4767eb78a551a93648a3f4de56f
         <activity android:name=".SignUp" android:exported="true" />
         <activity android:name=".Home" android:exported="true"
             tools:ignore="Instantiatable" />
