@@ -1,5 +1,6 @@
 package com.example.bookmanagerapp;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -141,6 +142,7 @@ public class DB extends SQLiteOpenHelper {
         return emailExists;
     }
 
+
     public boolean insertBook(String title, String author, float rating) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -151,6 +153,29 @@ public class DB extends SQLiteOpenHelper {
         long result = db.insert("books", null, contentValues);
         return result != -1; // Return true if insert is successful
     }
+
+    @SuppressLint("Range")
+    public String getHashedPasswordForUser(String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery("SELECT password FROM users WHERE email = ?", new String[]{email});
+
+        if (cursor.moveToFirst()) {
+            return cursor.getString(cursor.getColumnIndex("password"));
+        } else {
+            return null; // User not found
+        }
+    }
+
+    public Cursor searchBooks(String query) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] selectionArgs = {"%" + query + "%"};
+        return db.query("books", null, "title LIKE ? OR author LIKE ?", selectionArgs, null, null, null);
+    }
+
+
+
+
+
 
 
 }

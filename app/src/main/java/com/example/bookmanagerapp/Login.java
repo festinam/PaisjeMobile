@@ -1,9 +1,10 @@
 package com.example.bookmanagerapp;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Patterns;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -11,17 +12,18 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.mindrot.jbcrypt.BCrypt; // Import BCrypt
+
 public class Login extends AppCompatActivity {
     private EditText emailInput, passwordInput;
     private Button loginButton;
     private TextView forgotPassword, signUp;
     private DB dbHelper;
 
-    @SuppressLint({"MissingInflatedId"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login); // Make sure your layout file is activity_login.xml
+        setContentView(R.layout.activity_login);
 
         // Initialize views
         emailInput = findViewById(R.id.emailInput);
@@ -41,6 +43,13 @@ public class Login extends AppCompatActivity {
             Intent intent = new Intent(Login.this, SignUp.class);
             startActivity(intent);
         });
+
+        // Handle forgot password link click
+        forgotPassword.setOnClickListener(v -> {
+            // Navigate to the ForgotPasswordActivity
+            Intent intent = new Intent(Login.this, ForgotPassword.class);
+            startActivity(intent);
+        });
     }
 
     private void handleLogin() {
@@ -54,7 +63,6 @@ public class Login extends AppCompatActivity {
             emailInput.requestFocus();
             return;
         }
-
         if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             emailInput.setError("Invalid email format");
             emailInput.requestFocus();
@@ -67,14 +75,31 @@ public class Login extends AppCompatActivity {
             passwordInput.requestFocus();
             return;
         }
+        if (password.length() < 8) {
+            passwordInput.setError("Password must be at least 8 characters long");
+            passwordInput.requestFocus();
+            return;
+        }
+        if (!password.matches(".*[0-9].*")) {
+            passwordInput.setError("Password must contain at least one number");
+            passwordInput.requestFocus();
+            return;
+        }
+        if (!password.matches(".*[!@#$%^&*(),.?\":{}|<>].*")) {
+            passwordInput.setError("Password must contain at least one special character");
+            passwordInput.requestFocus();
+            return;
+        }
 
-        // Check user credentials in the database
-        if (dbHelper.verifyUser(email, password)) {
+        // Get stored hashed password from the database using the email
+        String storedHashedPassword = dbHelper.getHashedPasswordForUser(email);
+
+        if (storedHashedPassword != null && BCrypt.checkpw(password, storedHashedPassword)) {
             // Login successful
             Toast.makeText(this, "Login successful!", Toast.LENGTH_SHORT).show();
 
             // Navigate to the home screen or main activity
-            Intent intent = new Intent(Login.this, Home.class); // Replace with your home screen activity
+            Intent intent = new Intent(Login.this, Home.class);
             startActivity(intent);
             finish();
         } else {
@@ -82,4 +107,5 @@ public class Login extends AppCompatActivity {
             Toast.makeText(this, "Invalid email or password", Toast.LENGTH_SHORT).show();
         }
     }
+
 }

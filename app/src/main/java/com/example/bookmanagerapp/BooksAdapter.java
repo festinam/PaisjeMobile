@@ -52,4 +52,6 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewHold
             ratingTextView = itemView.findViewById(R.id.ratingTextView);
         }
     }
+
+
 }
