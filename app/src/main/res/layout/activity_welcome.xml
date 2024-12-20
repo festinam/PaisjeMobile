@@ -65,7 +65,7 @@
         android:layout_marginTop="10dp"
         android:layout_centerHorizontal="true"
         android:text="Your personal library, organized your way"
-        android:textColor="@android:color/white"
+        android:textColor="@color/gray"
         android:textSize="16sp"
         android:textStyle="italic" />
 

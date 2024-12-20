@@ -36,7 +36,7 @@ public class Home extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // Initialize views
-        booksRecyclerView = findViewById(R.id.booksRecyclerView);
+        booksRecyclerView = findViewById(R.id.bookListRecyclerView); // Ensure correct RecyclerView ID
         fabAddBook = findViewById(R.id.fabAddBook);
 
         // Initialize database helper and book list
@@ -60,6 +60,7 @@ public class Home extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate menu resource file for toolbar
         getMenuInflater().inflate(R.menu.home_menu, menu);
         return true;
     }
@@ -67,6 +68,7 @@ public class Home extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.menuLogout) {
+            // Navigate to Login Activity
             Intent intent = new Intent(Home.this, Login.class);
             startActivity(intent);
             finish(); // Close the Home activity
@@ -75,23 +77,25 @@ public class Home extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Load books from the database into the RecyclerView.
+     */
     private void loadBooks() {
         Cursor cursor = dbHelper.getAllBooks();
         if (cursor != null && cursor.moveToFirst()) {
             bookList.clear();
             do {
-                int id = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
                 String title = cursor.getString(cursor.getColumnIndexOrThrow("title"));
                 String author = cursor.getString(cursor.getColumnIndexOrThrow("author"));
                 float rating = cursor.getFloat(cursor.getColumnIndexOrThrow("rating"));
-
-                bookList.add(new Book(id, title, author, rating));
+                bookList.add(new Book(title, author, rating));
             } while (cursor.moveToNext());
-
             booksAdapter.notifyDataSetChanged();
             cursor.close();
         } else {
             Toast.makeText(this, "No books found", Toast.LENGTH_SHORT).show();
         }
     }
+
 }
+

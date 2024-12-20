@@ -1,22 +1,18 @@
 package com.example.bookmanagerapp;
 
 public class Book {
-    private int id;
     private String title;
     private String author;
     private float rating;
 
-    public Book(int id, String title, String author, float rating) {
-        this.id = id;
+    // Constructor
+    public Book(String title, String author, float rating) {
         this.title = title;
         this.author = author;
         this.rating = rating;
     }
 
-    public int getId() {
-        return id;
-    }
-
+    // Getter methods
     public String getTitle() {
         return title;
     }
@@ -27,5 +23,18 @@ public class Book {
 
     public float getRating() {
         return rating;
+    }
+
+    // Setter methods (optional, for updating book details)
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
     }
 }

@@ -1,35 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@drawable/gradient_background">
 
-    <EditText
-        android:id="@+id/etTitle"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Book Title"
-        android:inputType="text" />
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
 
-    <EditText
-        android:id="@+id/etAuthor"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Author"
-        android:inputType="text" />
+        <!-- Page Title -->
+        <TextView
+            android:id="@+id/addBookTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:text="Add a New Book"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/white" />
 
-    <EditText
-        android:id="@+id/etRating"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Rating (1.0 - 5.0)"
-        android:inputType="numberDecimal" />
+        <!-- Book Title Input -->
+        <EditText
+            android:id="@+id/bookTitleInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="Book Title"
+            android:inputType="text"
+            android:background="@drawable/rounded_input"
+            android:padding="12dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray" />
 
-    <Button
-        android:id="@+id/btnSave"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Save Book"
-        android:layout_marginTop="16dp" />
-</LinearLayout>
+        <!-- Author Input -->
+        <EditText
+            android:id="@+id/authorInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="Author Name"
+            android:inputType="textPersonName"
+            android:background="@drawable/rounded_input"
+            android:padding="12dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray" />
+
+        <!-- Rating Input -->
+        <EditText
+            android:id="@+id/ratingInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="Rating (e.g., 4.5)"
+            android:inputType="numberDecimal"
+            android:background="@drawable/rounded_input"
+            android:padding="12dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray" />
+
+        <!-- Add Book Button -->
+        <Button
+            android:id="@+id/addBookButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/rounded_button"
+            android:text="Add Book"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+</ScrollView>

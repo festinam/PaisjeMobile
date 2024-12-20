@@ -1,47 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="8dp"
+    android:orientation="horizontal"
+    android:padding="12dp"
     android:background="?attr/selectableItemBackground">
 
-    <!-- Book Title -->
-    <TextView
-        android:id="@+id/titleTextView"
-        android:layout_width="match_parent"
+    <!-- Book Title and Author -->
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Book Title"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:textColor="@android:color/black"
-        android:paddingBottom="4dp" />
+        android:layout_weight="1"
+        android:orientation="vertical">
 
-    <!-- Author Name -->
-    <TextView
-        android:id="@+id/authorTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Author Name"
-        android:textSize="16sp"
-        android:textColor="@android:color/darker_gray"
-        android:paddingBottom="4dp" />
+        <!-- Book Title -->
+        <TextView
+            android:id="@+id/titleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Book Title"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/black" />
 
-    <!-- Rating -->
+        <!-- Author Name -->
+        <TextView
+            android:id="@+id/authorTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Author Name"
+            android:textSize="14sp"
+            android:textColor="@color/gray" />
+    </LinearLayout>
+
+    <!-- Star Rating -->
     <TextView
         android:id="@+id/ratingTextView"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Rating: 4.5"
+        android:text="⭐⭐⭐⭐⭐"
         android:textSize="14sp"
-        android:textColor="@android:color/holo_blue_light" />
-
-    <!-- Read Date -->
-    <TextView
-        android:id="@+id/readDateTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Read on: 2023-12-10"
-        android:textSize="14sp"
-        android:textColor="@android:color/darker_gray" />
+        android:textColor="@color/gray"
+        android:gravity="center_vertical" />
 </LinearLayout>

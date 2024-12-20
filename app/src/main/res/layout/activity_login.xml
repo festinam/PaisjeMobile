@@ -51,7 +51,7 @@
         android:layout_centerHorizontal="true"
         android:text="Access your personal library"
         android:textSize="16sp"
-        android:textColor="@color/white" />
+        android:textColor="@color/gray" />
 
     <!-- Email Input -->
     <EditText
@@ -102,7 +102,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/loginButton"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="400dp"
+        android:layout_marginTop="24dp"
         android:orientation="horizontal">
 
         <TextView
@@ -111,6 +111,7 @@
             android:layout_height="wrap_content"
             android:text="Forgot Password?"
             android:textSize="14sp"
+            android:layout_marginTop="380dp"
             android:textColor="@color/white" />
 
         <TextView
@@ -120,6 +121,7 @@
             android:layout_marginStart="24dp"
             android:text="Sign Up"
             android:textSize="14sp"
+            android:layout_marginTop="380dp"
             android:textColor="@color/white" />
     </LinearLayout>
 

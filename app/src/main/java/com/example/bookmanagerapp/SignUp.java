@@ -23,7 +23,7 @@ public class SignUp extends AppCompatActivity {
 
         // Initialize views
         nameInput = findViewById(R.id.nameInput);
-        surnameInput = findViewById(R.id.surnameInput);
+        //surnameInput = findViewById(R.id.surnameInput);
         emailInput = findViewById(R.id.emailInput);
         passwordInput = findViewById(R.id.passwordInput);
         signupButton = findViewById(R.id.signupButton);

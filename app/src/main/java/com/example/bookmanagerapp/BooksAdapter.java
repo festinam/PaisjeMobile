@@ -21,6 +21,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewHold
     @NonNull
     @Override
     public BookViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        // Inflate the layout for each item
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_book, parent, false);
         return new BookViewHolder(view);
     }
@@ -30,11 +31,13 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewHold
         Book book = bookList.get(position);
         holder.titleTextView.setText(book.getTitle());
         holder.authorTextView.setText(book.getAuthor());
-        holder.ratingTextView.setText(String.valueOf(book.getRating()));
+        holder.ratingTextView.setText(String.format("⭐ %.1f", book.getRating()));
     }
+
 
     @Override
     public int getItemCount() {
+        // Return the number of items in the list
         return bookList.size();
     }
 
@@ -43,6 +46,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewHold
 
         public BookViewHolder(@NonNull View itemView) {
             super(itemView);
+            // Initialize views
             titleTextView = itemView.findViewById(R.id.titleTextView);
             authorTextView = itemView.findViewById(R.id.authorTextView);
             ratingTextView = itemView.findViewById(R.id.ratingTextView);

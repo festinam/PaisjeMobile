@@ -3,21 +3,21 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white">
+    android:background="@color/white">
 
     <!-- Toolbar -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/homeToolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/buttonAccent"
-        android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        android:titleTextColor="@android:color/white" />
+        android:layout_height="56dp"
+        android:background="@color/purple"
+        android:title="Home"
+        android:titleTextColor="@color/white"
+        android:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-    <!-- RecyclerView for displaying books -->
+    <!-- RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/booksRecyclerView"
+        android:id="@+id/bookListRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/homeToolbar"
@@ -25,16 +25,16 @@
         android:clipToPadding="false"
         android:scrollbars="vertical" />
 
-    <!-- Floating Action Button for adding a new book -->
+
+    <!-- Floating Action Button -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAddBook"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:contentDescription="Add Book"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="16dp"
+        android:backgroundTint="@color/purple"
         android:src="@drawable/ic_add"
-        android:tint="@android:color/white"
-        android:backgroundTint="@color/buttonAccent" />
+        android:contentDescription="Add Book" />
 </RelativeLayout>
