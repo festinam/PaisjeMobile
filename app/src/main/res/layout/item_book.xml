@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    app:cardElevation="4dp"
-    app:cardBackgroundColor="@android:color/white"
-    app:cardCornerRadius="8dp">
+    android:cardElevation="6dp"
+    android:cardCornerRadius="12dp"
+    android:cardBackgroundColor="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,18 +14,19 @@
         android:orientation="horizontal"
         android:padding="12dp">
 
-        <!-- Book Thumbnail -->
+        <!-- Book Cover Image -->
         <ImageView
-            android:id="@+id/bookThumbnail"
-            android:layout_width="60dp"
-            android:layout_height="80dp"
-            android:layout_marginEnd="12dp"
+            android:id="@+id/bookCoverImageView"
+            android:layout_width="80dp"
+            android:layout_height="120dp"
+            android:scaleType="centerCrop"
             android:src="@drawable/ic_book" />
 
-        <!-- Book Details -->
+        <!-- Book Info -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
             android:layout_weight="1"
             android:orientation="vertical">
 
@@ -36,52 +36,56 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Book Title"
+                android:textColor="@color/black"
                 android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="@android:color/black" />
+                android:textStyle="bold" />
 
-            <!-- Author Name -->
+            <!-- Book Author -->
             <TextView
                 android:id="@+id/authorTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="Author Name"
-                android:textSize="14sp"
-                android:textColor="@android:color/darker_gray" />
+                android:textColor="@color/gray"
+                android:textSize="14sp" />
 
-            <!-- Book Description or Other Info -->
+            <!-- Book Description -->
             <TextView
-                android:id="@+id/bookDescription"
+                android:id="@+id/descriptionTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="6dp"
                 android:text="A brief description of the book goes here..."
-                android:textSize="12sp"
-                android:textColor="@android:color/darker_gray"
-                android:ellipsize="end"
-                android:maxLines="2" />
-        </LinearLayout>
+                android:textColor="@color/gray"
+                android:textSize="12sp" />
 
-        <!-- Star Rating -->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/ratingTextView"
-                android:layout_width="wrap_content"
+            <!-- Rating and Actions -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="4.5"
-                android:textSize="14sp"
-                android:textColor="@android:color/black" />
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/ic_star" />
+                <!-- Rating -->
+                <TextView
+                    android:id="@+id/ratingTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="⭐ 4.5"
+                    android:textColor="@color/green"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <!-- Add to Favorites Button -->
+                <ImageView
+                    android:id="@+id/favoriteIcon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="16dp"
+                    android:src="@drawable/ic_favorite"
+                    android:contentDescription="Favorite Icon" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

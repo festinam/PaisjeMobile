@@ -53,6 +53,8 @@ public class Home extends AppCompatActivity {
         booksRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         booksRecyclerView.setAdapter(booksAdapter);
 
+        updateEmptyState();
+
         // Set the item click listener for RecyclerView
         booksAdapter.setOnBookClickListener(book -> {
             Toast.makeText(Home.this, "Clicked on: " + book.getTitle(), Toast.LENGTH_SHORT).show();
@@ -67,6 +69,18 @@ public class Home extends AppCompatActivity {
             startActivity(intent);
         });
     }
+
+    private void updateEmptyState() {
+        if (bookList.isEmpty()) {
+            emptyStateView.setVisibility(View.VISIBLE);
+            booksRecyclerView.setVisibility(View.GONE);
+        } else {
+            emptyStateView.setVisibility(View.GONE);
+            booksRecyclerView.setVisibility(View.VISIBLE);
+        }
+    }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
