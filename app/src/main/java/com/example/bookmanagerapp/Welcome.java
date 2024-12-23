@@ -23,14 +23,26 @@ public class Welcome extends AppCompatActivity {
 
         // Animacion për butonin
         Animation bounceAnimation = AnimationUtils.loadAnimation(this, R.anim.bounce_animation);
-        binding.getStartedButton.startAnimation(bounceAnimation);
+        if (bounceAnimation != null) {
+            binding.getStartedButton.startAnimation(bounceAnimation);
+        }
 
         // Kalimi në faqen e Login me efekt fade-in/out
         binding.getStartedButton.setOnClickListener(view -> {
             Intent intent = new Intent(Welcome.this, Login.class);
             startActivity(intent);
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            applyCustomTransition();
             finish();
         });
+    }
+
+    private void applyCustomTransition() {
+        // Use a modern approach for transitions if overridePendingTransition is deprecated
+        try {
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        } catch (NoSuchMethodError e) {
+            // In case overridePendingTransition is not supported, log or handle gracefully
+            e.printStackTrace();
+        }
     }
 }

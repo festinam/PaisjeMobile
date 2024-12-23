@@ -120,14 +120,13 @@ public class Home extends AppCompatActivity {
 
             // Show RecyclerView and hide empty state view
             booksRecyclerView.setVisibility(View.VISIBLE);
-            emptyStateView.setVisibility(View.GONE);
+            findViewById(R.id.emptyStateContainer).setVisibility(View.GONE);
         } else {
             // Show empty state view when no results found
             bookList.clear();
             booksAdapter.notifyDataSetChanged();
             booksRecyclerView.setVisibility(View.GONE);
-            emptyStateView.setVisibility(View.VISIBLE);
-            emptyStateView.setText("No books found matching \"" + query + "\"");
+            findViewById(R.id.emptyStateContainer).setVisibility(View.VISIBLE);
         }
     }
 
@@ -149,14 +148,13 @@ public class Home extends AppCompatActivity {
 
             // Show RecyclerView and hide empty state view
             booksRecyclerView.setVisibility(View.VISIBLE);
-            emptyStateView.setVisibility(View.GONE);
+            findViewById(R.id.emptyStateContainer).setVisibility(View.GONE);
         } else {
             // Show empty state view when no books found
             bookList.clear();
             booksAdapter.notifyDataSetChanged();
             booksRecyclerView.setVisibility(View.GONE);
-            emptyStateView.setVisibility(View.VISIBLE);
-            emptyStateView.setText("No books available");
+            findViewById(R.id.emptyStateContainer).setVisibility(View.VISIBLE);
         }
 
     }

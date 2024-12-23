@@ -38,6 +38,7 @@ android {
 }
 
 dependencies {
+    implementation ("com.google.android.material:material:1.9.0") // Replace with the latest version
 
     implementation(libs.appcompat)
     implementation(libs.material)
@@ -51,4 +52,7 @@ dependencies {
 
     // BCrypt për hashing
     implementation("org.mindrot:jbcrypt:0.4")
+    implementation ("androidx.cardview:cardview:1.0.0")
+
+
 }

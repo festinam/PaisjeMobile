@@ -2,16 +2,19 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_background">
 
     <!-- Toolbar at the top -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/homeToolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        android:elevation="4dp" />
+        android:elevation="4dp"
+        android:title="My Book Collection"
+        android:titleTextColor="@android:color/white" />
 
     <!-- RecyclerView for displaying books -->
     <androidx.recyclerview.widget.RecyclerView
@@ -19,21 +22,38 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="?attr/actionBarSize"
-        android:padding="16dp"
+        android:padding="8dp"
         android:visibility="visible" />
 
-    <!-- Empty State View -->
-    <TextView
-        android:id="@+id/emptyStateView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:visibility="gone"
-        android:text="No books available"
-        android:textColor="@android:color/darker_gray"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:gravity="center" />
+    <!-- Empty State Container -->
+    <LinearLayout
+        android:id="@+id/emptyStateContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <!-- Empty State Icon -->
+        <ImageView
+            android:id="@+id/emptyStateIcon"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/ic_empty_state"
+            android:contentDescription="No books available" />
+
+        <!-- Empty State Text -->
+        <TextView
+            android:id="@+id/emptyStateView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="No books available"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:gravity="center" />
+    </LinearLayout>
 
     <!-- Floating Action Button to add a book -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -43,6 +63,6 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
         android:src="@drawable/ic_add"
-        android:contentDescription="Add Book" />
-
+        android:contentDescription="Add a new book"
+        android:backgroundTint="?attr/colorPrimary" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
