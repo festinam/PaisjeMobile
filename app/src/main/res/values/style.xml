@@ -5,6 +5,12 @@
         <!-- Primary app color (used for Toolbar, FAB, etc.) -->
         <item name="colorPrimary">@color/primaryColor</item>
 
+        <!-- Use this parent theme for Toolbar support -->
+
+        <item name="windowActionBar">false</item> <!-- Disable default ActionBar -->
+        <item name="windowNoTitle">true</item>    <!-- Remove the title bar -->
+
+
         <!-- Dark variant of primary color (used for Status Bar) -->
         <item name="colorPrimaryDark">@color/primaryDarkColor</item>
 

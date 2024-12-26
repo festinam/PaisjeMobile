@@ -61,6 +61,17 @@
             android:padding="12dp"
             android:textColor="@color/black"
             android:textColorHint="@color/gray" />
+<!--
+        <Button
+            android:id="@+id/btnGoHome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Back to Home"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/ic_home" />
+            -->
 
         <!-- Add Book Button -->
         <Button
@@ -73,5 +84,6 @@
             android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="bold" />
+
     </LinearLayout>
 </ScrollView>

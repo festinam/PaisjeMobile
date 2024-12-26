@@ -3,6 +3,7 @@ package com.example.bookmanagerapp;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -41,11 +42,15 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewHold
     @Override
     public void onBindViewHolder(@NonNull BookViewHolder holder, int position) {
         Book book = bookList.get(position);
+
         holder.titleTextView.setText(book.getTitle());
         holder.authorTextView.setText(book.getAuthor());
+        holder.descriptionTextView.setText(book.getDescription());
         holder.ratingTextView.setText(String.format("⭐ %.1f", book.getRating()));
+        holder.bookImageView.setImageResource(book.getImageResource());
 
-        // Set click listener for the item
+
+        // Set a click listener for the item (if needed)
         holder.itemView.setOnClickListener(v -> {
             if (onBookClickListener != null) {
                 onBookClickListener.onBookClick(book);
@@ -58,16 +63,18 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewHold
         // Return the number of items in the list
         return bookList.size();
     }
-
     public static class BookViewHolder extends RecyclerView.ViewHolder {
-        TextView titleTextView, authorTextView, ratingTextView;
+        TextView titleTextView, authorTextView, descriptionTextView, ratingTextView;
+        ImageView bookImageView;
 
         public BookViewHolder(@NonNull View itemView) {
             super(itemView);
-            // Initialize views
             titleTextView = itemView.findViewById(R.id.titleTextView);
             authorTextView = itemView.findViewById(R.id.authorTextView);
+            descriptionTextView = itemView.findViewById(R.id.descriptionTextView);
             ratingTextView = itemView.findViewById(R.id.ratingTextView);
+            bookImageView = itemView.findViewById(R.id.bookImageView);
         }
     }
+
 }

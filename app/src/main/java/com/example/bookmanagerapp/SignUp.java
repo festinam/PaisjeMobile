@@ -1,5 +1,6 @@
 package com.example.bookmanagerapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Patterns;
@@ -25,7 +26,7 @@ public class SignUp extends AppCompatActivity {
 
         // Initialize views
         nameInput = findViewById(R.id.nameInput);
-        //surnameInput = findViewById(R.id.surnameInput);
+        surnameInput = findViewById(R.id.surnameInput); // Ensure this is correctly hooked up in your XML
         emailInput = findViewById(R.id.emailInput);
         passwordInput = findViewById(R.id.passwordInput);
         signupButton = findViewById(R.id.signupButton);
@@ -76,19 +77,9 @@ public class SignUp extends AppCompatActivity {
             return;
         }
 
-        // Password validation (at least one number, one special character, and minimum length 8)
-        if (password.length() < 8) {
-            passwordInput.setError("Password must be at least 8 characters long");
-            passwordInput.requestFocus();
-            return;
-        }
-        if (!password.matches(".*[0-9].*")) {
-            passwordInput.setError("Password must contain at least one number");
-            passwordInput.requestFocus();
-            return;
-        }
-        if (!password.matches(".*[!@#$%^&*(),.?\":{}|<>].*")) {
-            passwordInput.setError("Password must contain at least one special character");
+        // Password validation
+        if (password.length() < 8 || !password.matches(".*[0-9].*") || !password.matches(".*[!@#$%^&*(),.?\":{}|<>].*")) {
+            passwordInput.setError("Password must be at least 8 characters and include one number and one special character");
             passwordInput.requestFocus();
             return;
         }
@@ -100,10 +91,17 @@ public class SignUp extends AppCompatActivity {
             return;
         }
 
+        // Hash the password before storing it
+        String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+
         // Add the new user to the database
-        long userId = dbHelper.addUser(name, surname, email, password);
+        long userId = dbHelper.addUser(name, surname, email, hashedPassword);
         if (userId > 0) {
             Toast.makeText(this, "Sign up successful!", Toast.LENGTH_SHORT).show();
+            dbHelper.addSession(true);
+            Intent intent = new Intent(SignUp.this, Home.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
             finish(); // Close the sign-up page
         } else {
             Toast.makeText(this, "Error during sign-up. Please try again.", Toast.LENGTH_SHORT).show();

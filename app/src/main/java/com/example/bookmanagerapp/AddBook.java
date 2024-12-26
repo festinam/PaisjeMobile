@@ -1,5 +1,6 @@
 package com.example.bookmanagerapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,12 +24,22 @@ public class AddBook extends AppCompatActivity {
         authorInput = findViewById(R.id.authorInput);
         ratingInput = findViewById(R.id.ratingInput);
         addBookButton = findViewById(R.id.addBookButton);
+       // Button btnGoHome = findViewById(R.id.btnGoHome);  // Find the go home button
+
 
         // Initialize database helper
         dbHelper = new DB(this);
 
         // Save book on button click
         addBookButton.setOnClickListener(v -> saveBook());
+/*
+        // Set up the go home button
+        btnGoHome.setOnClickListener(v -> {
+            Intent intent = new Intent(AddBook.this, Home.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+        });
+        */
     }
 
     private void saveBook() {
@@ -48,13 +59,13 @@ public class AddBook extends AppCompatActivity {
                 return;
             }
 
-            boolean isInserted = dbHelper.insertBook(title, author, rating);
-            if (isInserted) {
+           dbHelper.addBook(title, author, "", rating, 0);
+//            if (isInserted) {
                 Toast.makeText(this, "Book added successfully", Toast.LENGTH_SHORT).show();
                 finish(); // Close AddBook activity
-            } else {
-                Toast.makeText(this, "Failed to add book", Toast.LENGTH_SHORT).show();
-            }
+//            } else {
+//                Toast.makeText(this, "Failed to add book", Toast.LENGTH_SHORT).show();
+//            }
         } catch (NumberFormatException e) {
             Toast.makeText(this, "Invalid rating. Please enter a valid number.", Toast.LENGTH_SHORT).show();
         }

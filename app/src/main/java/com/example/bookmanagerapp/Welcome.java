@@ -1,6 +1,7 @@
 package com.example.bookmanagerapp;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -12,6 +13,7 @@ import com.example.bookmanagerapp.databinding.ActivityWelcomeBinding;
 public class Welcome extends AppCompatActivity {
 
     private ActivityWelcomeBinding binding;
+    private DB dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +22,15 @@ public class Welcome extends AppCompatActivity {
         // Aktivizimi i ViewBinding
         binding = ActivityWelcomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        // Initialize database helper
+        dbHelper = new DB(this);
+
+        if (isLoginSessionActive()){
+            Intent intent = new Intent(Welcome.this, Home.class);
+            startActivity(intent);
+            finish();
+        }
 
         // Animacion për butonin
         Animation bounceAnimation = AnimationUtils.loadAnimation(this, R.anim.bounce_animation);
@@ -34,6 +45,20 @@ public class Welcome extends AppCompatActivity {
             applyCustomTransition();
             finish();
         });
+    }
+
+    private Boolean isLoginSessionActive() {
+        Cursor cursor = null;
+        try {
+            cursor = dbHelper.getSessions();
+
+            if (cursor != null && cursor.moveToFirst()) {
+                return true;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return false;
     }
 
     private void applyCustomTransition() {

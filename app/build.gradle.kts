@@ -44,6 +44,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+    implementation(libs.firebase.inappmessaging)
 
     // Test Dependencies
     testImplementation(libs.junit)
@@ -53,6 +54,8 @@ dependencies {
     // BCrypt për hashing
     implementation("org.mindrot:jbcrypt:0.4")
     implementation ("androidx.cardview:cardview:1.0.0")
+    implementation ("androidx.appcompat:appcompat:1.3.0") // Use the latest version suitable for your project
+
 
 
 }

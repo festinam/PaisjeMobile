@@ -18,10 +18,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
 
         <!-- Login Activity -->
@@ -34,6 +31,7 @@
         <activity
             android:name=".ForgotPassword"
             android:exported="true" />
+
 
         <!-- Sign Up Activity -->
         <activity
@@ -48,6 +46,15 @@
         <!-- Welcome Activity -->
         <activity
             android:name=".Welcome"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".AddBook"
             android:exported="true" />
 
     </application>

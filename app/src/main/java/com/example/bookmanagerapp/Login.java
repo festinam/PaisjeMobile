@@ -97,7 +97,7 @@ public class Login extends AppCompatActivity {
         if (storedHashedPassword != null && BCrypt.checkpw(password, storedHashedPassword)) {
             // Login successful
             Toast.makeText(this, "Login successful!", Toast.LENGTH_SHORT).show();
-
+            dbHelper.addSession(true); //Shtojme nje sesion per t'a kontrolluar se a jemi te qasur (aktiv)
             // Navigate to the home screen or main activity
             Intent intent = new Intent(Login.this, Home.class);
             startActivity(intent);

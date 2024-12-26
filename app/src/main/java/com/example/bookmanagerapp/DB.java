@@ -21,12 +21,19 @@ public class DB extends SQLiteOpenHelper {
     private static final String COLUMN_USER_EMAIL = "email";
     private static final String COLUMN_USER_PASSWORD = "password";
 
+    // Tabela e sesionit te loginit
+    private static final String TABLE_LOGIN_SESSION = "login_session";
+    private static final String COLUMN_LOGIN_ID = "id";
+    private static final String COLUMN_IS_SESSION_ACTIVE = "is_session_active";
+
     // Tabela e librave
     private static final String TABLE_BOOKS = "books";
     private static final String COLUMN_BOOK_ID = "id";
     private static final String COLUMN_BOOK_TITLE = "title";
     private static final String COLUMN_BOOK_AUTHOR = "author";
+    private static final String COLUMN_BOOK_DESCRIPTION = "description";
     private static final String COLUMN_BOOK_RATING = "rating";
+    private static final String COLUMN_BOOK_IMAGE = "imageResource";
     private static final String COLUMN_BOOK_READ_DATE = "read_date";
 
     // Konstruktor
@@ -36,21 +43,29 @@ public class DB extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // Krijimi i tabelës së përdoruesve
+        // Krijimi i tabelës së sesioneve te qasjes
         String CREATE_USERS_TABLE = "CREATE TABLE " + TABLE_USERS + "(" +
                 COLUMN_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_USER_NAME + " TEXT NOT NULL, " +
                 COLUMN_USER_SURNAME + " TEXT NOT NULL, " +
                 COLUMN_USER_EMAIL + " TEXT NOT NULL, " +
-                COLUMN_USER_PASSWORD + " TEXT NOT NULL)";
+                COLUMN_USER_PASSWORD + " TEXT NOT NULL" +")";
         db.execSQL(CREATE_USERS_TABLE);
+
+        // Krijimi i tabelës së përdoruesve
+        String CREATE_LOGGIN_SESSION_TABLE = "CREATE TABLE " + TABLE_LOGIN_SESSION + "(" +
+                COLUMN_LOGIN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_IS_SESSION_ACTIVE + " BOOLEAN NOT NULL " + ")";
+        db.execSQL(CREATE_LOGGIN_SESSION_TABLE);
 
         // Krijimi i tabelës së librave
         String CREATE_BOOKS_TABLE = "CREATE TABLE " + TABLE_BOOKS + "(" +
                 COLUMN_BOOK_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_BOOK_TITLE + " TEXT NOT NULL, " +
+                COLUMN_BOOK_DESCRIPTION + " INTEGER, " + // New column for image resource
                 COLUMN_BOOK_AUTHOR + " TEXT NOT NULL, " +
                 COLUMN_BOOK_RATING + " REAL, " +
+                COLUMN_BOOK_IMAGE + " INTEGER, " + // New column for image resource
                 COLUMN_BOOK_READ_DATE + " DATETIME DEFAULT CURRENT_TIMESTAMP)";
         db.execSQL(CREATE_BOOKS_TABLE);
     }
@@ -62,13 +77,20 @@ public class DB extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(COLUMN_USER_NAME, name);
         values.put(COLUMN_USER_SURNAME, surname);
-        values.put(COLUMN_USER_EMAIL, email);
+        values.put(COLUMN_USER_EMAIL, email.toLowerCase());
         values.put(COLUMN_USER_PASSWORD, password);
 
         long userId = db.insert(TABLE_USERS, null, values);
         db.close();
+        if (userId == -1) {
+            // Handle insertion failure
+            return -1;
+        }
         return userId;
     }
+
+    //Update user
+
 
     // Verifikimi i kredencialeve të përdoruesit
     public boolean verifyUser(String email, String password) {
@@ -84,14 +106,43 @@ public class DB extends SQLiteOpenHelper {
         return userExists;
     }
 
+    // Metoda per shtimin e nje sesioni te loginit
+    public long addSession(Boolean isSessionActive) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_IS_SESSION_ACTIVE, isSessionActive);
+
+
+        long sessionId = db.insert(TABLE_LOGIN_SESSION, null, values);
+        db.close();
+        return sessionId;
+    }
+
+    // Metoda per marrjen e sesioneve te loginit
+    public Cursor getSessions() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM " + TABLE_LOGIN_SESSION, null);
+    }
+
+    //Metoda per fshirjen e sesionit te loginit
+    public void logout() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_LOGIN_SESSION, null, null);
+        db.close();
+    }
+
     // Metoda për shtimin e një libri
-    public long addBook(String title, String author, float rating) {
+    public long addBook(String title, String author, String description, float rating, int imageResource) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(COLUMN_BOOK_TITLE, title);
         values.put(COLUMN_BOOK_AUTHOR, author);
+        values.put(COLUMN_BOOK_DESCRIPTION, description);
         values.put(COLUMN_BOOK_RATING, rating);
+        values.put(COLUMN_BOOK_IMAGE, imageResource);
+
 
         long bookId = db.insert(TABLE_BOOKS, null, values);
         db.close();
@@ -157,25 +208,21 @@ public class DB extends SQLiteOpenHelper {
     @SuppressLint("Range")
     public String getHashedPasswordForUser(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
-        @SuppressLint("Recycle") Cursor cursor = db.rawQuery("SELECT password FROM users WHERE email = ?", new String[]{email});
+        Cursor cursor = db.rawQuery("SELECT password FROM users WHERE email = ?", new String[]{email.toLowerCase()});
 
+        String hashedPassword = null;
         if (cursor.moveToFirst()) {
-            return cursor.getString(cursor.getColumnIndex("password"));
-        } else {
-            return null; // User not found
+            hashedPassword = cursor.getString(cursor.getColumnIndex("password"));
         }
+        cursor.close(); // Ensure the cursor is closed
+        db.close();
+        return hashedPassword;
     }
+
 
     public Cursor searchBooks(String query) {
         SQLiteDatabase db = this.getReadableDatabase();
         String[] selectionArgs = {"%" + query + "%"};
         return db.query("books", null, "title LIKE ? OR author LIKE ?", selectionArgs, null, null, null);
     }
-
-
-
-
-
-
-
 }
