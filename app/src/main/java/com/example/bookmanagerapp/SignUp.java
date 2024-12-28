@@ -92,58 +92,44 @@ public class SignUp extends AppCompatActivity {
             return;
         }
 
-        // Check if the email already exists
-        if (dbHelper.checkEmailExists(email)) {
-            emailInput.setError("Email already exists");
-            emailInput.requestFocus();
-            return;
-        }
-
-        // Hash the password before storing it
-        String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
-
-        // Add the new user to the database
-        long userId = dbHelper.addUser(name, surname, email, hashedPassword);
-        if (userId > 0) {
-
-//            dbHelper.addSession(true);
-
-            FirebaseAuth.getInstance().createUserWithEmailAndPassword(email.trim(), password.trim()).addOnSuccessListener(this, new OnSuccessListener<AuthResult>() {
-                        @Override
-                        public void onSuccess(AuthResult authResult) {
-                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                            UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
-                                    .setDisplayName(name + " " + surname)
-                                    .build();
-                            user.updateProfile(profileUpdate)
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            Toast.makeText(SignUp.this, "Sign up successful!", Toast.LENGTH_SHORT).show();
-                                            Intent intent = new Intent(SignUp.this, Home.class);
-                                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                            startActivity(intent);
-                                            finish(); // Close the sign-up page
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Toast.makeText(SignUp.this, "Error during sign-up: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-
-                                        }
-                                    });
-                        }
-                    })
-                    .addOnFailureListener(this, new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
+        // Attempt to sign up with Firebase Auth
+        FirebaseAuth.getInstance().createUserWithEmailAndPassword(email.trim(), password.trim())
+                .addOnSuccessListener(this, new OnSuccessListener<AuthResult>() {
+                    @Override
+                    public void onSuccess(AuthResult authResult) {
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
+                                .setDisplayName(name + " " + surname)
+                                .build();
+                        user.updateProfile(profileUpdate)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Toast.makeText(SignUp.this, "Sign up successful!", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(SignUp.this, Home.class);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        startActivity(intent);
+                                        finish(); // Close the sign-up page
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(SignUp.this, "Error during sign-up: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                    }
+                })
+                .addOnFailureListener(this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Check if the error is related to "email already exists"
+                        if (e.getMessage().contains("The email address is already in use")) {
+                            Toast.makeText(SignUp.this, "This email is already registered. Please try logging in or use a different email.", Toast.LENGTH_SHORT).show();
+                        } else {
                             Toast.makeText(SignUp.this, "Error during sign-up. Please try again.", Toast.LENGTH_SHORT).show();
                         }
-                    });
-        } else {
-            Toast.makeText(this, "Error during sign-up. Please try again.", Toast.LENGTH_SHORT).show();
-        }
+                    }
+                });
     }
-
 }
