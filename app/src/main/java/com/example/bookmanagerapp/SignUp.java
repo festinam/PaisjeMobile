@@ -7,6 +7,7 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,12 +20,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
-import org.mindrot.jbcrypt.BCrypt; // Import BCrypt
+import org.mindrot.jbcrypt.BCrypt;
 
 public class SignUp extends AppCompatActivity {
 
     private EditText nameInput, surnameInput, emailInput, passwordInput;
     private Button signupButton;
+    private TextView loginLink; // Reference to the login link
     private DB dbHelper;
 
     @Override
@@ -34,10 +36,11 @@ public class SignUp extends AppCompatActivity {
 
         // Initialize views
         nameInput = findViewById(R.id.nameInput);
-        surnameInput = findViewById(R.id.surnameInput); // Ensure this is correctly hooked up in your XML
+        surnameInput = findViewById(R.id.surnameInput);
         emailInput = findViewById(R.id.emailInput);
         passwordInput = findViewById(R.id.passwordInput);
         signupButton = findViewById(R.id.signupButton);
+        loginLink = findViewById(R.id.loginLink); // Initialize the login link view
 
         // Initialize database helper
         dbHelper = new DB(this);
@@ -47,6 +50,16 @@ public class SignUp extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 handleSignUp();
+            }
+        });
+
+        // Handle login link click
+        loginLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Start Login Activity when the login link is clicked
+                Intent intent = new Intent(SignUp.this, Login.class);
+                startActivity(intent); // Open LoginActivity
             }
         });
     }
