@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -136,7 +137,8 @@ public class Home extends AppCompatActivity {
         int id = item.getItemId();
         if (id == R.id.menuLogout) {
             // Log out the user and return to the Login screen
-            dbHelper.logout();
+//            dbHelper.logout();
+            FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(Home.this, Login.class);
             startActivity(intent);
             finish();

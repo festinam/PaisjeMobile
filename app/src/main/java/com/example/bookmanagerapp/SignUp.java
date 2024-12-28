@@ -9,7 +9,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 import org.mindrot.jbcrypt.BCrypt; // Import BCrypt
 
@@ -97,12 +105,42 @@ public class SignUp extends AppCompatActivity {
         // Add the new user to the database
         long userId = dbHelper.addUser(name, surname, email, hashedPassword);
         if (userId > 0) {
-            Toast.makeText(this, "Sign up successful!", Toast.LENGTH_SHORT).show();
-            dbHelper.addSession(true);
-            Intent intent = new Intent(SignUp.this, Home.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            finish(); // Close the sign-up page
+
+//            dbHelper.addSession(true);
+
+            FirebaseAuth.getInstance().createUserWithEmailAndPassword(email.trim(), password.trim()).addOnSuccessListener(this, new OnSuccessListener<AuthResult>() {
+                        @Override
+                        public void onSuccess(AuthResult authResult) {
+                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                            UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
+                                    .setDisplayName(name + " " + surname)
+                                    .build();
+                            user.updateProfile(profileUpdate)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Toast.makeText(SignUp.this, "Sign up successful!", Toast.LENGTH_SHORT).show();
+                                            Intent intent = new Intent(SignUp.this, Home.class);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                            startActivity(intent);
+                                            finish(); // Close the sign-up page
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Toast.makeText(SignUp.this, "Error during sign-up: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+
+                                        }
+                                    });
+                        }
+                    })
+                    .addOnFailureListener(this, new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(SignUp.this, "Error during sign-up. Please try again.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
         } else {
             Toast.makeText(this, "Error during sign-up. Please try again.", Toast.LENGTH_SHORT).show();
         }

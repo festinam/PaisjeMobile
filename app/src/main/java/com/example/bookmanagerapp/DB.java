@@ -21,10 +21,7 @@ public class DB extends SQLiteOpenHelper {
     private static final String COLUMN_USER_EMAIL = "email";
     private static final String COLUMN_USER_PASSWORD = "password";
 
-    // Tabela e sesionit te loginit
-    private static final String TABLE_LOGIN_SESSION = "login_session";
-    private static final String COLUMN_LOGIN_ID = "id";
-    private static final String COLUMN_IS_SESSION_ACTIVE = "is_session_active";
+
 
     // Tabela e librave
     private static final String TABLE_BOOKS = "books";
@@ -43,7 +40,7 @@ public class DB extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // Krijimi i tabelës së sesioneve te qasjes
+        // Krijimi i tabelës së perdorueseve
         String CREATE_USERS_TABLE = "CREATE TABLE " + TABLE_USERS + "(" +
                 COLUMN_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_USER_NAME + " TEXT NOT NULL, " +
@@ -52,11 +49,7 @@ public class DB extends SQLiteOpenHelper {
                 COLUMN_USER_PASSWORD + " TEXT NOT NULL" +")";
         db.execSQL(CREATE_USERS_TABLE);
 
-        // Krijimi i tabelës së përdoruesve
-        String CREATE_LOGGIN_SESSION_TABLE = "CREATE TABLE " + TABLE_LOGIN_SESSION + "(" +
-                COLUMN_LOGIN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COLUMN_IS_SESSION_ACTIVE + " BOOLEAN NOT NULL " + ")";
-        db.execSQL(CREATE_LOGGIN_SESSION_TABLE);
+
 
         // Krijimi i tabelës së librave
         String CREATE_BOOKS_TABLE = "CREATE TABLE " + TABLE_BOOKS + "(" +
@@ -106,31 +99,6 @@ public class DB extends SQLiteOpenHelper {
         return userExists;
     }
 
-    // Metoda per shtimin e nje sesioni te loginit
-    public long addSession(Boolean isSessionActive) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_IS_SESSION_ACTIVE, isSessionActive);
-
-
-        long sessionId = db.insert(TABLE_LOGIN_SESSION, null, values);
-        db.close();
-        return sessionId;
-    }
-
-    // Metoda per marrjen e sesioneve te loginit
-    public Cursor getSessions() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        return db.rawQuery("SELECT * FROM " + TABLE_LOGIN_SESSION, null);
-    }
-
-    //Metoda per fshirjen e sesionit te loginit
-    public void logout() {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_LOGIN_SESSION, null, null);
-        db.close();
-    }
 
     // Metoda për shtimin e një libri
     public long addBook(String title, String author, String description, float rating, int imageResource) {

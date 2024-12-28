@@ -10,7 +10,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.mindrot.jbcrypt.BCrypt; // Import BCrypt
 
@@ -92,20 +98,32 @@ public class Login extends AppCompatActivity {
         }
 
         // Get stored hashed password from the database using the email
-        String storedHashedPassword = dbHelper.getHashedPasswordForUser(email);
+//        String storedHashedPassword = dbHelper.getHashedPasswordForUser(email);
+//
+//        if (storedHashedPassword != null && BCrypt.checkpw(password, storedHashedPassword)) {
+//            // Login successful
+////            dbHelper.addSession(true); //Shtojme nje sesion per t'a kontrolluar se a jemi te qasur (aktiv)
+//            // Navigate to the home screen or main activity
+//        } else {
+//            // Login failed
+//            Toast.makeText(this, "Invalid email or password", Toast.LENGTH_SHORT).show();
+//        }
 
-        if (storedHashedPassword != null && BCrypt.checkpw(password, storedHashedPassword)) {
-            // Login successful
-            Toast.makeText(this, "Login successful!", Toast.LENGTH_SHORT).show();
-            dbHelper.addSession(true); //Shtojme nje sesion per t'a kontrolluar se a jemi te qasur (aktiv)
-            // Navigate to the home screen or main activity
-            Intent intent = new Intent(Login.this, Home.class);
-            startActivity(intent);
-            finish();
-        } else {
-            // Login failed
-            Toast.makeText(this, "Invalid email or password", Toast.LENGTH_SHORT).show();
-        }
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
+                .addOnSuccessListener(this, new OnSuccessListener<AuthResult>() {
+                    @Override
+                    public void onSuccess(AuthResult authResult) {
+                        Toast.makeText(Login.this, "Login successful!", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(Login.this, Home.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                }).addOnFailureListener(this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(Login.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
 }

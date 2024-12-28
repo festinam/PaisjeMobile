@@ -9,11 +9,11 @@ import android.view.animation.AnimationUtils;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.bookmanagerapp.databinding.ActivityWelcomeBinding;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class Welcome extends AppCompatActivity {
 
     private ActivityWelcomeBinding binding;
-    private DB dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,8 +23,6 @@ public class Welcome extends AppCompatActivity {
         binding = ActivityWelcomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // Initialize database helper
-        dbHelper = new DB(this);
 
         if (isLoginSessionActive()){
             Intent intent = new Intent(Welcome.this, Home.class);
@@ -48,17 +46,11 @@ public class Welcome extends AppCompatActivity {
     }
 
     private Boolean isLoginSessionActive() {
-        Cursor cursor = null;
-        try {
-            cursor = dbHelper.getSessions();
-
-            if (cursor != null && cursor.moveToFirst()) {
-                return true;
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            return false;
+        }else {
+            return true;
         }
-        return false;
     }
 
     private void applyCustomTransition() {
