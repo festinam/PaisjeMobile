@@ -1,5 +1,6 @@
 package com.example.bookmanagerapp;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
@@ -71,8 +73,11 @@ public class Home extends AppCompatActivity {
         });
 
         // Set the item click listener for RecyclerView
-        booksAdapter.setOnBookClickListener(book -> {
-            Toast.makeText(Home.this, "Clicked on: " + book.getTitle(), Toast.LENGTH_SHORT).show();
+        booksAdapter.setOnBookClickListener(new BooksAdapter.OnBookClickListener() {
+            @Override
+            public void onBookClick(Book book, int position) {
+                showDeleteConfirmationDialog(book, position);
+            }
         });
     }
 
@@ -236,5 +241,30 @@ public class Home extends AppCompatActivity {
         dbHelper.addBook("1984", "George Orwell",
                 "A dystopian novel about surveillance and totalitarianism.",
                 4.9f, R.drawable.george);
+    }
+
+    public void showDeleteConfirmationDialog(Book book, int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+        .setMessage("Do you want to delete " + book.getTitle() + "?")
+        .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Delete" button, so delete the book.
+                booksAdapter.deleteBook(position);
+                Toast.makeText(Home.this, book.getTitle() + " deleted successfully!", Toast.LENGTH_SHORT).show();
+            }
+        })
+        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Cancel" button, so dismiss the dialog
+                // and continue editing.
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        // Create and show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 }
