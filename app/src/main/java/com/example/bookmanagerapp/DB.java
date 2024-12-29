@@ -124,12 +124,13 @@ public class DB extends SQLiteOpenHelper {
     }
 
     // Metoda për përditësimin e një libri
-    public void updateBook(int id, String title, String author, float rating) {
+    public void updateBook(int id, String title, String author, String description, float rating) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(COLUMN_BOOK_TITLE, title);
         values.put(COLUMN_BOOK_AUTHOR, author);
+        values.put(COLUMN_BOOK_DESCRIPTION, description);
         values.put(COLUMN_BOOK_RATING, rating);
 
         db.update(TABLE_BOOKS, values, COLUMN_BOOK_ID + "=?", new String[]{String.valueOf(id)});

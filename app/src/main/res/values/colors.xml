@@ -33,4 +33,5 @@
     <color name="gray">#C2C1C1</color> <!-- Light Gray -->
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
+    <color name="yellow">#FFC107</color>
 </resources>

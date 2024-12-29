@@ -4,4 +4,11 @@
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
     </style>
+
+    <style name="Theme.BookManagerApp" parent="Base.Theme.BookManagerApp" />
+
+    <style name="RatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">@color/textColorSecondary</item>
+        <item name="colorControlActivated">@color/yellow</item>
+    </style>
 </resources>

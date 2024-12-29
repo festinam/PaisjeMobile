@@ -23,11 +23,16 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewHold
 
     // Interface for click listener
     public interface OnBookClickListener {
-        void onBookClick(Book book);
+        void onBookClick(Book book, int position);
+        void onBookLongClicked(Book book, int position);
     }
 
     // Setter for the click listener
     public void setOnBookClickListener(OnBookClickListener listener) {
+        this.onBookClickListener = listener;
+    }
+
+    public void setOnBookLongClickedListener(OnBookClickListener listener){
         this.onBookClickListener = listener;
     }
 
@@ -53,8 +58,15 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewHold
         // Set a click listener for the item (if needed)
         holder.itemView.setOnClickListener(v -> {
             if (onBookClickListener != null) {
-                onBookClickListener.onBookClick(book);
+                onBookClickListener.onBookClick(book, position);
             }
+        });
+
+        holder.itemView.setOnLongClickListener(v -> {
+            if (onBookClickListener != null) {
+                onBookClickListener.onBookLongClicked(book, position);
+            }
+            return false;
         });
     }
 
@@ -75,6 +87,24 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewHold
             ratingTextView = itemView.findViewById(R.id.ratingTextView);
             bookImageView = itemView.findViewById(R.id.bookImageView);
         }
+    }
+
+
+    public void deleteBook(int position) {
+        bookList.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, bookList.size());
+        // Additional deletion code such as updating the database can go here
+    }
+
+    public void updateBook(int position, String newTitle, String newAuthor, String newDescription, float newRating) {
+        Book book = bookList.get(position);
+        book.setTitle(newTitle);
+        book.setAuthor(newAuthor);
+        book.setDescription(newDescription);
+        book.setRating(newRating);
+        notifyItemChanged(position);
+        // Update the database or any other storage
     }
 
 }

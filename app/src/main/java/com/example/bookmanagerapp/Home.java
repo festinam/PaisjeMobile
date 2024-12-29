@@ -2,18 +2,23 @@ package com.example.bookmanagerapp;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
@@ -79,8 +84,18 @@ public class Home extends AppCompatActivity {
         });
 
         // Set the item click listener for RecyclerView
-        booksAdapter.setOnBookClickListener(book -> {
-            Toast.makeText(Home.this, "Clicked on: " + book.getTitle(), Toast.LENGTH_SHORT).show();
+        booksAdapter.setOnBookClickListener(new BooksAdapter.OnBookClickListener() {
+            @Override
+            public void onBookClick(Book book, int position) {
+                //edit
+                showUpdateBookDialog(book, position);
+            }
+
+            @Override
+            public void onBookLongClicked(Book book, int position) {
+                //delete
+                showDeleteConfirmationDialog(book, position);
+            }
         });
     }
 
@@ -191,6 +206,8 @@ public class Home extends AppCompatActivity {
 
                     bookList.add(new Book(id, title, author, description, rating, imageResource));
                 } while (cursor.moveToNext());
+            }else {
+                mockBooks(); // Add mock data only if the database is empty
             }
 
         } finally {
@@ -227,5 +244,84 @@ public class Home extends AppCompatActivity {
         if (notificationManager != null) {
             notificationManager.notify(1, builder.build());
         }
+    }
+
+    public void showDeleteConfirmationDialog(Book book, int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setMessage("Do you want to delete " + book.getTitle() + "?")
+                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User clicked the "Delete" button, so delete the book.
+                        booksAdapter.deleteBook(position);
+                        Toast.makeText(Home.this, book.getTitle() + " deleted successfully!", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User clicked the "Cancel" button, so dismiss the dialog
+                        // and continue editing.
+                        if (dialog != null) {
+                            dialog.dismiss();
+                        }
+                    }
+                });
+        // Create and show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private void mockBooks() {
+        bookList.clear(); // Clear existing data
+
+        bookList.add(new Book(1, "The Great Gatsby", "F. Scott Fitzgerald",
+                "A classic novel set in the Jazz Age, exploring themes of wealth and love.",
+                4.7f, R.drawable.great_gatsby));
+
+        bookList.add(new Book(2, "To Kill a Mockingbird", "Harper Lee",
+                "A powerful story about racial injustice and childhood.",
+                4.8f, R.drawable.mockingbird));
+
+        bookList.add(new Book(3, "1984", "George Orwell",
+                "A dystopian novel about surveillance and totalitarianism.",
+                4.9f, R.drawable.george));
+        booksAdapter.notifyDataSetChanged(); // Notify the adapter of the changes
+
+        dbHelper.addBook("The Great Gatsby", "F. Scott Fitzgerald", "A classic novel set in the Jazz Age, exploring themes of wealth and love.", 4.7f, R.drawable.great_gatsby);
+        dbHelper.addBook("To Kill a Mockingbird", "Harper Lee",
+                "A powerful story about racial injustice and childhood.",
+                4.8f, R.drawable.mockingbird);
+        dbHelper.addBook("1984", "George Orwell",
+                "A dystopian novel about surveillance and totalitarianism.",
+                4.9f, R.drawable.george);
+    }
+
+    private void showUpdateBookDialog(Book book, int position) {
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View view = inflater.inflate(R.layout.book_update_dialog, null);
+
+        EditText titleInput = view.findViewById(R.id.title_input);
+        EditText authorInput = view.findViewById(R.id.author_input);
+        EditText descriptionInput = view.findViewById(R.id.description_input);
+        RatingBar ratingInput = view.findViewById(R.id.rating_input);
+
+        titleInput.setText(book.getTitle());
+        authorInput.setText(book.getAuthor());
+        descriptionInput.setText(book.getDescription());
+        ratingInput.setRating(book.getRating());
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(view);
+        builder.setTitle("Update Book");
+        builder.setPositiveButton("Update", (dialog, id) -> {
+            String newTitle = titleInput.getText().toString();
+            String newAuthor = authorInput.getText().toString();
+            String newDescription = descriptionInput.getText().toString();
+            float newRating = ratingInput.getRating();
+            booksAdapter.updateBook(position, newTitle, newAuthor, newDescription, newRating);
+            dbHelper.updateBook(book.getId(), newTitle, newAuthor, newDescription, newRating);
+        });
+        builder.setNegativeButton("Cancel", (dialog, id) -> dialog.dismiss());
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }
