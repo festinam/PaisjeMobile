@@ -1,7 +1,10 @@
 package com.example.bookmanagerapp;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -14,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,12 +36,18 @@ public class Home extends AppCompatActivity {
     private DB dbHelper;
     private List<Book> bookList;
 
-    private MenuItem menuHome;
+    private static final String CHANNEL_ID = "welcome_channel";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        // Krijo kanalin e njoftimit
+        createNotificationChannel();
+
+        // Shfaq njoftimin mirëseardhës
+        showWelcomeNotification();
 
         // Initialize Toolbar
         Toolbar toolbar = findViewById(R.id.homeToolbar);
@@ -48,7 +58,6 @@ public class Home extends AppCompatActivity {
             Log.d("ToolbarDebug", "Title set successfully.");
         }
 
-
         // Initialize views
         booksRecyclerView = findViewById(R.id.booksRecyclerView);
         emptyStateView = findViewById(R.id.emptyStateView);
@@ -57,7 +66,6 @@ public class Home extends AppCompatActivity {
         // Initialize database helper and book list
         dbHelper = new DB(this);
         bookList = new ArrayList<>();
-
 
         // Set up RecyclerView
         booksAdapter = new BooksAdapter(bookList);
@@ -95,32 +103,26 @@ public class Home extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu resource file.
         getMenuInflater().inflate(R.menu.home_menu, menu);
 
-        // Find the MenuItem that triggers the SearchView
         MenuItem searchItem = menu.findItem(R.id.menuSearch);
 
-        // Get the SearchView and check if it is null
         SearchView searchView = null;
         if (searchItem != null) {
             searchView = (SearchView) searchItem.getActionView();
         }
 
-        // Set properties of the SearchView, if it's not null
         if (searchView != null) {
             searchView.setQueryHint("Search books...");
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
-                    // Trigger search logic here
                     searchBooks(query);
                     return true;
                 }
 
                 @Override
                 public boolean onQueryTextChange(String newText) {
-                    // Optionally handle text change for suggestions
                     searchBooks(newText);
                     return true;
                 }
@@ -131,31 +133,24 @@ public class Home extends AppCompatActivity {
         return true;
     }
 
-
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.menuLogout) {
-            // Log out the user and return to the Login screen
-//            dbHelper.logout();
             FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(Home.this, Login.class);
             startActivity(intent);
             finish();
-            return true;
-        } else if (id == R.id.menuSearch) {
-            // Already handled in onCreateOptionsMenu
             return true;
         } else {
             return super.onOptionsItemSelected(item);
         }
     }
 
-
     private void searchBooks(String query) {
         Cursor cursor = null;
         try {
-            cursor = dbHelper.searchBooks(query); // Assuming this method exists in your DB class
+            cursor = dbHelper.searchBooks(query);
             bookList.clear();
 
             if (cursor != null && cursor.moveToFirst()) {
@@ -196,45 +191,41 @@ public class Home extends AppCompatActivity {
 
                     bookList.add(new Book(id, title, author, description, rating, imageResource));
                 } while (cursor.moveToNext());
-            } else {
-                mockBooks(); // Add mock data only if the database is empty
-            }
-
-            // Log bookList for debugging
-            for (Book book : bookList) {
-                System.out.println("Book: " + book.getTitle());
             }
 
         } finally {
             if (cursor != null) cursor.close();
         }
 
-        booksAdapter.notifyDataSetChanged(); // Notify adapter here
+        booksAdapter.notifyDataSetChanged();
         updateEmptyState();
     }
 
-    private void mockBooks() {
-//        bookList.clear(); // Clear existing data
-//
-//        bookList.add(new Book(1, "The Great Gatsby", "F. Scott Fitzgerald",
-//                "A classic novel set in the Jazz Age, exploring themes of wealth and love.",
-//                4.7f, R.drawable.great_gatsby));
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "WelcomeChannel";
+            String description = "Channel for welcome notifications";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
 
-//        bookList.add(new Book(2, "To Kill a Mockingbird", "Harper Lee",
-//                "A powerful story about racial injustice and childhood.",
-//                4.8f, R.drawable.mockingbird));
-//
-//        bookList.add(new Book(3, "1984", "George Orwell",
-//                "A dystopian novel about surveillance and totalitarianism.",
-//                4.9f, R.drawable.george));
-//        booksAdapter.notifyDataSetChanged(); // Notify the adapter of the changes
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            if (notificationManager != null) {
+                notificationManager.createNotificationChannel(channel);
+            }
+        }
+    }
 
-        dbHelper.addBook("The Great Gatsby", "F. Scott Fitzgerald", "A classic novel set in the Jazz Age, exploring themes of wealth and love.", 4.7f, R.drawable.great_gatsby);
-        dbHelper.addBook("To Kill a Mockingbird", "Harper Lee",
-                "A powerful story about racial injustice and childhood.",
-                4.8f, R.drawable.mockingbird);
-        dbHelper.addBook("1984", "George Orwell",
-                "A dystopian novel about surveillance and totalitarianism.",
-                4.9f, R.drawable.george);
+    private void showWelcomeNotification() {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setContentTitle("Welcome to Book Manager!")
+                .setContentText("Start organizing your books today!")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        if (notificationManager != null) {
+            notificationManager.notify(1, builder.build());
+        }
     }
 }
