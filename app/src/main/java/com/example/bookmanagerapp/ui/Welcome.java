@@ -1,13 +1,13 @@
-package com.example.bookmanagerapp;
+package com.example.bookmanagerapp.ui;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.bookmanagerapp.R;
 import com.example.bookmanagerapp.databinding.ActivityWelcomeBinding;
 import com.google.firebase.auth.FirebaseAuth;
 

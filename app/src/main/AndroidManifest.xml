@@ -26,29 +26,29 @@
 
         <!-- Login Activity -->
         <activity
-            android:name=".Login"
+            android:name=".ui.Login"
             android:exported="true"
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
 
         <!-- Forgot Password Activity -->
         <activity
-            android:name=".ForgotPassword"
+            android:name=".ui.ForgotPassword"
             android:exported="true" />
 
 
         <!-- Sign Up Activity -->
         <activity
-            android:name=".SignUp"
+            android:name=".ui.SignUp"
             android:exported="true" />
 
         <!-- Home Activity -->
         <activity
-            android:name=".Home"
+            android:name=".ui.Home"
             android:exported="true" />
 
         <!-- Welcome Activity -->
         <activity
-            android:name=".Welcome"
+            android:name=".ui.Welcome"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -57,7 +57,7 @@
         </activity>
 
         <activity
-            android:name=".AddBook"
+            android:name=".ui.AddBook"
             android:exported="true" />
 
     </application>

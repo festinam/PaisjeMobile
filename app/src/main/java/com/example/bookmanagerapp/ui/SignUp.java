@@ -1,4 +1,4 @@
-package com.example.bookmanagerapp;
+package com.example.bookmanagerapp.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,14 +13,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.bookmanagerapp.R;
+import com.example.bookmanagerapp.database.DB;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
-
-import org.mindrot.jbcrypt.BCrypt;
 
 public class SignUp extends AppCompatActivity {
 

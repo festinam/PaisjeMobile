@@ -1,4 +1,4 @@
-package com.example.bookmanagerapp;
+package com.example.bookmanagerapp.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +8,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.bookmanagerapp.models.Book;
+import com.example.bookmanagerapp.R;
 
 import java.util.List;
 

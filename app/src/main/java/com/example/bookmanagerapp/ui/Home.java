@@ -1,4 +1,4 @@
-package com.example.bookmanagerapp;
+package com.example.bookmanagerapp.ui;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -26,6 +26,10 @@ import androidx.core.app.NotificationCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.bookmanagerapp.R;
+import com.example.bookmanagerapp.adapters.BooksAdapter;
+import com.example.bookmanagerapp.database.DB;
+import com.example.bookmanagerapp.models.Book;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 

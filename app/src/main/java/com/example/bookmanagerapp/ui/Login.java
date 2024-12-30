@@ -1,10 +1,8 @@
-package com.example.bookmanagerapp;
+package com.example.bookmanagerapp.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Patterns;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -13,12 +11,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.bookmanagerapp.R;
+import com.example.bookmanagerapp.database.DB;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-
-import org.mindrot.jbcrypt.BCrypt; // Import BCrypt
 
 public class Login extends AppCompatActivity {
     private EditText emailInput, passwordInput;

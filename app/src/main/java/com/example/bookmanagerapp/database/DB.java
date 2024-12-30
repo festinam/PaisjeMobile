@@ -1,4 +1,4 @@
-package com.example.bookmanagerapp;
+package com.example.bookmanagerapp.database;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;

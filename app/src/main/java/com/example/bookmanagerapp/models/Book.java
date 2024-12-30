@@ -1,4 +1,4 @@
-package com.example.bookmanagerapp;
+package com.example.bookmanagerapp.models;
 
 public class Book {
     private int id; // Unique identifier for the book
