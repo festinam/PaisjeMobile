@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary Colors -->
+    <color name="primaryColor">#6200EE</color> <!-- Purple -->
+    <color name="primaryDarkColor">#3700B3</color> <!-- Dark Purple -->
+    <color name="accentColor">#03DAC5</color> <!-- Teal -->
+
+    <!-- Background Colors -->
+    <color name="backgroundColor">#FFFFFF</color> <!-- White -->
+    <color name="backgroundColorNight">#121212</color> <!-- Dark for Night Mode -->
+
+    <!-- Text Colors -->
+    <color name="textColorPrimary">#000000</color> <!-- Black -->
+    <color name="textColorSecondary">#757575</color> <!-- Gray -->
+    <color name="textColorOnPrimary">#FFFFFF</color> <!-- White on Primary -->
+
+    <!-- Border/Stroke/Shadow Colors -->
+    <color name="borderColor">#DDDDDD</color> <!-- Light Gray for borders -->
+    <color name="shadowColor">#000000</color> <!-- Black for shadows -->
+
+    <!-- Button and Icon Colors -->
+    <color name="buttonAccent">#FF5722</color> <!-- Orange for buttons -->
+    <color name="iconTint">#757575</color> <!-- Gray for icons -->
+
+    <!-- Additional Colors -->
+    <color name="purple">#6200EE</color> <!-- Added missing purple -->
+    <color name="purple_500">#6200EE</color>
+    <color name="purple_700">#3700B3</color>
+    <color name="teal_200">#03DAC5</color>
+    <color name="teal_700">#018786</color>
+    <color name="green">#8BC34A</color> <!-- Green -->
+    <color name="red">#F44336</color> <!-- Red for warnings or errors -->
+    <color name="gray">#C2C1C1</color> <!-- Light Gray -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="yellow">#FFC107</color>
+</resources>

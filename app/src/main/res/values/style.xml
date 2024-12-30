@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base application theme -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Primary app color (used for Toolbar, FAB, etc.) -->
+        <item name="colorPrimary">@color/primaryColor</item>
+
+        <!-- Use this parent theme for Toolbar support -->
+
+        <item name="windowActionBar">false</item> <!-- Disable default ActionBar -->
+        <item name="windowNoTitle">true</item>    <!-- Remove the title bar -->
+
+
+        <!-- Dark variant of primary color (used for Status Bar) -->
+        <item name="colorPrimaryDark">@color/primaryDarkColor</item>
+
+        <!-- Accent color (used for FAB, switches, etc.) -->
+        <item name="colorAccent">@color/accentColor</item>
+
+        <!-- Background color for app -->
+        <item name="android:windowBackground">@color/backgroundColor</item>
+
+        <!-- Text color for Toolbar -->
+        <item name="android:textColorPrimary">@color/white</item>
+
+        <!-- Elevation and shadow for Material components -->
+        <item name="android:shadowColor">@color/black</item>
+    </style>
+</resources>
